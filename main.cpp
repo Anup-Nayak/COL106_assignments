@@ -57,6 +57,16 @@ class SET{
         sort(v.begin(), v.end());
 
     }
+
+    void updateVector(vector<int> new_vector){
+            this->v=new_vector;
+            sort(v.begin(), v.end());
+
+    } 
+
+    vector<int> returnVector(){
+        return v;
+    }
 };
 
 // class ends
@@ -113,7 +123,32 @@ int BelongsTo(int b, int c){
     }
 };
 
+void Union(int b,int c){
+    if(database.size()<b){
+        createAndPush(b);
+    }
+    if(database.size()<c){
+        createAndPush(c);
+    }
 
+    vector<int> set1= database[b-1].returnVector();
+    vector<int> set2= database[c-1].returnVector();
+
+    for(int i=0;i<set2.size();i++){
+        if(database[b-1].elementExist(set2[i])){
+
+        }else{
+            set1.push_back(set2[i]);
+        }
+        
+    }
+
+    database[b-1].updateVector(set1);
+    
+
+
+
+};
 
 
 int main(){
@@ -121,26 +156,29 @@ int main(){
     Insert(1,2);
     Insert(1,5);
     Insert(1,3);
+    Insert(1,0);
 
     Insert(2,2);
     Insert(2,5);
+    Insert(2,8);
 
     Insert(3,3);
+    Insert(3,6);
+    Insert(3,9);
 
-    int a=Delete(1,5);
-    int b=Delete(2,1);
-    int c=Delete(3,3);
-    int d=Delete(4,5);
+    
+    Union(1,2);
+    Union(2,3);
+
+    
 
     database[0].printSet();
     database[1].printSet();
     database[2].printSet();
 
-    int e=BelongsTo(1,3);
-    int f=BelongsTo(3,3);
-    int g=BelongsTo(4,3);
     
-    cout << e <<" " << f << " "<< g << endl;
+    
+    
 
 
 
