@@ -1,3 +1,2 @@
-    // database[0].printSet();
-    // database[1].printSet();
-    // database[2].printSet();
+Difference(1,2);
+    Difference(2,3);

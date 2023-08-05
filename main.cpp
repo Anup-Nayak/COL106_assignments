@@ -44,7 +44,6 @@ class SET{
         
         
     }
-    
 
     void deleteElement(int c){
         for(int i=0;i<v.size();i++){
@@ -93,7 +92,7 @@ void Insert(int b,int c){
 
     database[b-1].insertSet(c);
 
-}
+};
 
 int Delete(int b,int c){
     if(database.size()<b){
@@ -107,8 +106,7 @@ int Delete(int b,int c){
         }
     }
 
-}
-
+};
 
 int BelongsTo(int b, int c){
     if(database.size()<b){
@@ -173,32 +171,90 @@ void Intersection(int b,int c){
 
 };
 
+vector<int> returnIntersection(int b,int c){
+    if(database.size()<b){
+        createAndPush(b);
+    }
+    if(database.size()<c){
+        createAndPush(c);
+    }
+
+    vector<int> set1= database[b-1].returnVector();
+    vector<int> set2= database[c-1].returnVector();
+    vector<int> intersectionSet;
+
+    for(int i=0;i<set1.size();i++){
+        for(int j=0;j<set2.size();j++){
+            if(set1[i]==set2[j]){
+                intersectionSet.push_back(set1[i]);
+            }
+        }
+    }
+
+    return intersectionSet;
+}
+
+int Size(int b){
+    if(database.size()<b){
+        createAndPush(b);
+    }
+
+    return database[b-1].setSize();
+
+};
+
+void Difference(int b,int c){
+
+    if(database.size()<b){
+        createAndPush(b);
+    }
+    if(database.size()<c){
+        createAndPush(c);
+    }
+
+    vector<int> intersection = returnIntersection(b,c);
+    for(int i=0;i<intersection.size();i++){
+        database[b-1].deleteElement(intersection[i]);
+    }
+    
+
+
+};
+
 int main(){
 
     Insert(1,2);
     Insert(1,5);
     Insert(1,3);
     Insert(1,0);
+    // cout<< Size(1)<< endl;
 
     Insert(2,2);
     Insert(2,5);
-    Insert(2,8);
+    Insert(2,0);
+    // cout<< Size(2)<< endl;
 
-    Insert(3,3);
+    
     Insert(3,6);
     Insert(3,9);
+    // cout<< Size(3)<< endl;
 
     
-    Intersection(1,2);
-    Intersection(2,3);
+    // Intersection(1,2);
+    // cout<< Size(1)<< endl;
+    // Intersection(2,3);
+    // Intersection(4,3);
 
     
-
+    Difference(1,2);
+    Difference(2,3);
+    Difference(3,4);
 
 
     database[0].printSet();
     database[1].printSet();
     database[2].printSet();
+    database[3].printSet();
 
     
     
