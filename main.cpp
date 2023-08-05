@@ -150,6 +150,28 @@ void Union(int b,int c){
 
 };
 
+void Intersection(int b,int c){
+    if(database.size()<b){
+        createAndPush(b);
+    }
+    if(database.size()<c){
+        createAndPush(c);
+    }
+
+    vector<int> set1= database[b-1].returnVector();
+    vector<int> set2= database[c-1].returnVector();
+    vector<int> intersectionSet;
+
+    for(int i=0;i<set1.size();i++){
+        for(int j=0;j<set2.size();j++){
+            if(set1[i]==set2[j]){
+                intersectionSet.push_back(set1[i]);
+            }
+        }
+    }
+    database[b-1].updateVector(intersectionSet);
+
+};
 
 int main(){
 
@@ -167,10 +189,12 @@ int main(){
     Insert(3,9);
 
     
-    Union(1,2);
-    Union(2,3);
+    Intersection(1,2);
+    Intersection(2,3);
 
     
+
+
 
     database[0].printSet();
     database[1].printSet();
