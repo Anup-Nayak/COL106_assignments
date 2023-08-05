@@ -1,2 +1,3 @@
-Difference(1,2);
-    Difference(2,3);
+database[1].printSet();
+    database[2].printSet();
+    database[3].printSet();

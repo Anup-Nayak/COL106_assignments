@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -30,9 +31,11 @@ class SET{
     }
 
     void printSet(){
-        for(int i=0;i<v.size();i++){
-            cout<< v[i]<<" ";
+        sort(v.begin(), v.end());
+        for(int i=0;i<v.size()-1;i++){
+            cout<< v[i]<<",";
         }
+        cout<<v[v.size()-1];
         cout<<endl;
     }
 
@@ -46,16 +49,25 @@ class SET{
     }
 
     void deleteElement(int c){
-        for(int i=0;i<v.size();i++){
+        int i=0;
+        vector<int>::iterator it;
+        while(i<v.size()){
             if (v[i]==c){
-                v[i]=v[-1];
+                break;
+            }else{
+                i+=1;
             }
+        
 
         }
-        v.pop_back();
+        it=v.begin();
+        v.erase(it+i);
+        
         sort(v.begin(), v.end());
 
-    }
+
+
+}
 
     void updateVector(vector<int> new_vector){
             this->v=new_vector;
@@ -148,6 +160,29 @@ void Union(int b,int c){
 
 };
 
+vector<int> returnUnion(int b,int c){
+    if(database.size()<b){
+        createAndPush(b);
+    }
+    if(database.size()<c){
+        createAndPush(c);
+    }
+
+    vector<int> set1= database[b-1].returnVector();
+    vector<int> set2= database[c-1].returnVector();
+
+    for(int i=0;i<set2.size();i++){
+        if(database[b-1].elementExist(set2[i])){
+
+        }else{
+            set1.push_back(set2[i]);
+        }
+        
+    }
+
+    return set1;
+}
+
 void Intersection(int b,int c){
     if(database.size()<b){
         createAndPush(b);
@@ -221,47 +256,78 @@ void Difference(int b,int c){
 
 };
 
+void SymmetricDifference(int b,int c){
+
+    if(database.size()<b){
+        createAndPush(b);
+    }
+    if(database.size()<c){
+        createAndPush(c);
+    }
+
+    vector<int> set2= returnIntersection(b,c);
+
+    Union(b,c);
+    
+    for(int i=0;i<set2.size();i++){
+        Delete(b,set2[i]);
+    }
+
+};   
+
+void Print(int b){
+    if(database.size()<b){
+        cout<<endl;
+    }else{
+        database[b-1].printSet();
+    }
+};
+
 int main(){
 
     Insert(1,2);
     Insert(1,5);
     Insert(1,3);
     Insert(1,0);
-    // cout<< Size(1)<< endl;
+    Insert(1,45);
+    Print(1);
+    database[0].printSet();
+
+    Delete(1,45);
+    database[0].printSet();
+    Delete(1,3);
+    database[0].printSet();
+
 
     Insert(2,2);
     Insert(2,5);
-    Insert(2,0);
-    // cout<< Size(2)<< endl;
+    Insert(2,8);
+    Print(2);
+    cout<< Size(2)<< endl;
 
     
-    Insert(3,6);
+    Insert(3,33);
     Insert(3,9);
-    // cout<< Size(3)<< endl;
+    Insert(3,9);
+    Print(3);
+    cout<< Size(3)<< endl;
 
     
-    // Intersection(1,2);
-    // cout<< Size(1)<< endl;
-    // Intersection(2,3);
-    // Intersection(4,3);
+    Intersection(1,2);
+    cout<< Size(1)<< endl;
+    Intersection(2,3);
+    Intersection(4,3);
 
     
-    Difference(1,2);
-    Difference(2,3);
-    Difference(3,4);
+    SymmetricDifference(1,2);
+    SymmetricDifference(2,3);
+    SymmetricDifference(3,4);
 
-
-    database[0].printSet();
-    database[1].printSet();
-    database[2].printSet();
-    database[3].printSet();
-
-    
-    
-    
-
-
-
+    cout<< Size(1)<< endl;
+    Print(1);
+    Print(2);
+    Print(3);
+    Print(4);
 
 
 };
