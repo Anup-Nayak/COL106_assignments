@@ -62,6 +62,7 @@ class SET{
 // class ends
 
 // database initialized
+
 vector<SET> database;
 
 // helper functions
@@ -99,7 +100,18 @@ int Delete(int b,int c){
 }
 
 
-
+int BelongsTo(int b, int c){
+    if(database.size()<b){
+        return -1;
+    }else{
+        if(database[b-1].elementExist(c)==true){
+            return 1;
+        }else{
+            
+            return 0;
+        }
+    }
+};
 
 
 
@@ -123,8 +135,13 @@ int main(){
     database[0].printSet();
     database[1].printSet();
     database[2].printSet();
+
+    int e=BelongsTo(1,3);
+    int f=BelongsTo(3,3);
+    int g=BelongsTo(4,3);
     
-    cout << a << b << c << d<< endl;
+    cout << e <<" " << f << " "<< g << endl;
+
 
 
 
