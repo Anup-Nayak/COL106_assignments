@@ -1,11 +1,11 @@
 #include <iostream>
 #include <vector>
-#include <bits/stdc++.h>
+
 using namespace std;
 
 //class defined
 
-class SET{
+class SET{ 
     public:
     int number;
     vector<int> v;
@@ -14,35 +14,52 @@ class SET{
 
     SET(int setNumber){
         this->number = setNumber;
-        cout<<"constructor called and set "<<setNumber<<" is created."<<endl;
+        // cout<<"constructor called and set "<<setNumber<<" is created."<<endl;
     }
 
     int setSize(){
         return v.size();
     }
 
+    void Sort(){
+        for (int i = 0; i < v.size(); i++) {
+            for (int j = i; j < (v.size()); j++) {
+                if (v[i] > v[j]) {
+                    swap(v[i], v[j]);
+                }
+            }
+        }
+    }
+
     bool elementExist(int c){
         for(int i=0;i<v.size();i++){
             if (v[i]==c){
-                return true;
+                return true;        
             }
         }
         return false;
     }
 
     void printSet(){
-        sort(v.begin(), v.end());
-        for(int i=0;i<v.size()-1;i++){
-            cout<< v[i]<<",";
-        }
-        cout<<v[v.size()-1];
-        cout<<endl;
+        Sort();
+        if (v.size()==0){
+            cout<<endl;
+        }else{
+            int i=0;
+            while (i<v.size()-1){
+                cout<<v[i]<<",";
+                i+=1;
+            }
+            cout<<v[i];
+            cout<<endl;
     }
+        }
+        
 
     void insertSet(int c){
         if (elementExist(c)==false){
             this->v.push_back(c);
-            sort(v.begin(), v.end());
+            Sort();
         }
         
         
@@ -63,7 +80,7 @@ class SET{
         it=v.begin();
         v.erase(it+i);
         
-        sort(v.begin(), v.end());
+        Sort();
 
 
 
@@ -71,9 +88,8 @@ class SET{
 
     void updateVector(vector<int> new_vector){
             this->v=new_vector;
-            sort(v.begin(), v.end());
-
-    } 
+            Sort();
+    }
 
     vector<int> returnVector(){
         return v;
@@ -98,54 +114,55 @@ void createAndPush(int n){
 // functions
 
 void Insert(int b,int c){
-    if(database.size()<b){
+    if(database.size()<b+1){
         createAndPush(b);
     }
 
-    database[b-1].insertSet(c);
+    database[b].insertSet(c);
+    cout<<database[b].setSize()<< endl;
 
 };
 
-int Delete(int b,int c){
-    if(database.size()<b){
-        return -1;
+void Delete(int b,int c){
+    if(database.size()<b+1){
+        cout<< -1<< endl;
     }else{
-        if(database[b-1].elementExist(c)==false){
-            return database[b-1].setSize();
+        if(database[b].elementExist(c)==false){
+            cout<< database[b].setSize()<< endl;
         }else{
-            database[b-1].deleteElement(c);
-            return 0;
+            database[b].deleteElement(c);
+            cout<< database[b].setSize()<< endl;
         }
     }
 
 };
 
-int BelongsTo(int b, int c){
-    if(database.size()<b){
-        return -1;
+void BelongsTo(int b, int c){
+    if(database.size()<b+1){
+        cout<< -1<< endl;
     }else{
-        if(database[b-1].elementExist(c)==true){
-            return 1;
+        if(database[b].elementExist(c)==true){
+            cout<< 1<< endl;
         }else{
             
-            return 0;
+            cout<< 0<< endl;
         }
     }
 };
 
 void Union(int b,int c){
-    if(database.size()<b){
+    if(database.size()<b+1){
         createAndPush(b);
     }
-    if(database.size()<c){
+    if(database.size()<c+1){
         createAndPush(c);
     }
 
-    vector<int> set1= database[b-1].returnVector();
-    vector<int> set2= database[c-1].returnVector();
+    vector<int> set1= database[b].returnVector();
+    vector<int> set2= database[c].returnVector();
 
     for(int i=0;i<set2.size();i++){
-        if(database[b-1].elementExist(set2[i])){
+        if(database[b].elementExist(set2[i])){
 
         }else{
             set1.push_back(set2[i]);
@@ -153,7 +170,8 @@ void Union(int b,int c){
         
     }
 
-    database[b-1].updateVector(set1);
+    database[b].updateVector(set1);
+    cout<< database[b].setSize()<< endl;
     
 
 
@@ -161,18 +179,18 @@ void Union(int b,int c){
 };
 
 vector<int> returnUnion(int b,int c){
-    if(database.size()<b){
+    if(database.size()<b+1){
         createAndPush(b);
     }
-    if(database.size()<c){
+    if(database.size()<c+1){
         createAndPush(c);
     }
 
-    vector<int> set1= database[b-1].returnVector();
-    vector<int> set2= database[c-1].returnVector();
+    vector<int> set1= database[b].returnVector();
+    vector<int> set2= database[c].returnVector();
 
     for(int i=0;i<set2.size();i++){
-        if(database[b-1].elementExist(set2[i])){
+        if(database[b].elementExist(set2[i])){
 
         }else{
             set1.push_back(set2[i]);
@@ -184,15 +202,15 @@ vector<int> returnUnion(int b,int c){
 }
 
 void Intersection(int b,int c){
-    if(database.size()<b){
+    if(database.size()<b+1){
         createAndPush(b);
     }
-    if(database.size()<c){
+    if(database.size()<c+1){
         createAndPush(c);
     }
 
-    vector<int> set1= database[b-1].returnVector();
-    vector<int> set2= database[c-1].returnVector();
+    vector<int> set1= database[b].returnVector();
+    vector<int> set2= database[c].returnVector();
     vector<int> intersectionSet;
 
     for(int i=0;i<set1.size();i++){
@@ -202,20 +220,21 @@ void Intersection(int b,int c){
             }
         }
     }
-    database[b-1].updateVector(intersectionSet);
+    database[b].updateVector(intersectionSet);
+    cout<< database[b].setSize()<< endl;
 
 };
 
 vector<int> returnIntersection(int b,int c){
-    if(database.size()<b){
+    if(database.size()<b+1){
         createAndPush(b);
     }
-    if(database.size()<c){
+    if(database.size()<c+1){
         createAndPush(c);
     }
 
-    vector<int> set1= database[b-1].returnVector();
-    vector<int> set2= database[c-1].returnVector();
+    vector<int> set1= database[b].returnVector();
+    vector<int> set2= database[c].returnVector();
     vector<int> intersectionSet;
 
     for(int i=0;i<set1.size();i++){
@@ -229,105 +248,169 @@ vector<int> returnIntersection(int b,int c){
     return intersectionSet;
 }
 
-int Size(int b){
-    if(database.size()<b){
+void Size(int b){
+    if(database.size()<b+1){
         createAndPush(b);
     }
 
-    return database[b-1].setSize();
+    cout<< database[b].setSize()<< endl;
 
 };
 
 void Difference(int b,int c){
 
-    if(database.size()<b){
+    if(database.size()<b+1){
         createAndPush(b);
     }
-    if(database.size()<c){
+    if(database.size()<c+1){
         createAndPush(c);
     }
 
     vector<int> intersection = returnIntersection(b,c);
     for(int i=0;i<intersection.size();i++){
-        database[b-1].deleteElement(intersection[i]);
+        database[b].deleteElement(intersection[i]);
     }
-    
+    cout<< database[b].setSize()<< endl;
+
 
 
 };
 
 void SymmetricDifference(int b,int c){
 
-    if(database.size()<b){
+    if(database.size()<b+1){
         createAndPush(b);
     }
-    if(database.size()<c){
+    if(database.size()<c+1){
         createAndPush(c);
     }
 
-    vector<int> set2= returnIntersection(b,c);
+    vector<int> intersection= returnIntersection(b,c);
 
-    Union(b,c);
-    
+    vector<int> set1= database[b].returnVector();
+    vector<int> set2= database[c].returnVector();
+
     for(int i=0;i<set2.size();i++){
-        Delete(b,set2[i]);
+        if(database[b].elementExist(set2[i])){
+
+        }else{
+            set1.push_back(set2[i]);
+        }
+        
     }
+
+    database[b].updateVector(set1);
+    
+    for(int i=0;i<intersection.size();i++){
+        // Delete(b,intersection[i]);
+        database[b].deleteElement(intersection[i]);
+
+    }
+    cout<< database[b].setSize()<< endl;
 
 };   
 
 void Print(int b){
-    if(database.size()<b){
+    if(database.size()<b+1){
         cout<<endl;
     }else{
-        database[b-1].printSet();
+        database[b].printSet();
     }
 };
 
 int main(){
+    int a,b,c;
+    // int temp;
 
-    Insert(1,2);
-    Insert(1,5);
-    Insert(1,3);
-    Insert(1,0);
-    Insert(1,45);
-    Print(1);
-    database[0].printSet();
+    // vector<int> v;
+    // while(cin>>temp){
+    //     v.push_back(temp);
+    // }
 
-    Delete(1,45);
-    database[0].printSet();
-    Delete(1,3);
-    database[0].printSet();
+    while(cin>>a){
+        if(a==6 || a==9) cin>>b;
+        else cin>>b>>c;
+        
+        
+        switch (a)
+        {
+        case 1:
+            Insert(b,c);
+            break;
+        case 2:
+            Delete(b,c);
+            break;
+        case 3:
+            BelongsTo(b,c);
+            break;
+        case 4:
+            Union(b,c);
+            break;
+        case 5:
+            Intersection(b,c);
+            break;
+        case 6:
+            Size(b);
+            break;
+        case 7:
+            Difference(b,c);
+            break;
+        case 8:
+            SymmetricDifference(b,c);
+            break;
+        case 9:
+            Print(b);
+            break;
+        
+        default:
+            break;
+        }
+    }
+
+    // Insert(0,2);
+    // Insert(0,5);
+    // Insert(0,3);
+    // Insert(0,0);
+    // Insert(0,45);
+    // Print(0);
+    // database[0].printSet();
+
+    // Delete(0,45);
+    // database[0].printSet();
+    // Delete(0,3);
+    // database[0].printSet();
 
 
-    Insert(2,2);
-    Insert(2,5);
-    Insert(2,8);
-    Print(2);
-    cout<< Size(2)<< endl;
+    // Insert(1,2);
+    // Insert(1,5);
+    // Insert(1,8);
+    // Print(1);
+    // cout<< Size(1)<< endl;
 
     
-    Insert(3,33);
-    Insert(3,9);
-    Insert(3,9);
-    Print(3);
-    cout<< Size(3)<< endl;
+    // Insert(2,33);
+    // Insert(2,9);
+    // Insert(2,9);
+    // Print(2);
+    // cout<< Size(2)<< endl;
 
     
-    Intersection(1,2);
-    cout<< Size(1)<< endl;
-    Intersection(2,3);
-    Intersection(4,3);
+    // Intersection(0,1);
+    // cout<< Size(0)<< endl;
+    // Intersection(1,2);
+    // Intersection(2,3);
 
     
-    SymmetricDifference(1,2);
-    SymmetricDifference(2,3);
-    SymmetricDifference(3,4);
+    // SymmetricDifference(0,1);
+    // SymmetricDifference(1,2);
+    // SymmetricDifference(2,3);
 
-    cout<< Size(1)<< endl;
-    Print(1);
-    Print(2);
-    Print(3);
-    Print(4);
+    // cout<< Size(1)<< endl;
+    // Print(0);
+    // Print(1);
+    // Print(2);
+    // Print(3);
+    
 
 
 };
